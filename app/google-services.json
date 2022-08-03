@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "515054620954",
+    "project_id": "thirdeye-c44b8",
+    "storage_bucket": "thirdeye-c44b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515054620954:android:b1d12eaa0e075e56605ca3",
+        "android_client_info": {
+          "package_name": "com.assassino.thirdeye"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "515054620954-97ailvme9or2rv41nnpr5uc1vej6bjqh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.assassino.thirdeye",
+            "certificate_hash": "1f44cbed846242507ec7133969740e674e31065c"
+          }
+        },
+        {
+          "client_id": "515054620954-rh3um2snsedpe8t25juj77k2u8efs4jc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP5ksDDTMxHxYP6AFiJr-gmokxW48VJWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "515054620954-rh3um2snsedpe8t25juj77k2u8efs4jc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

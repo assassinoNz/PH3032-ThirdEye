@@ -1,0 +1,17 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreferenceCompat
+        app:defaultValue="true"
+        app:key="keyAllowOnline"
+        app:summaryOff="May result in less accurate recognitions"
+        app:title="Allow cloud processing" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="true"
+        app:key="keyAllowVoiceFeedback"
+        app:title="Enable in-app voice feedback" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="true"
+        app:key="keyAllowVibrationFeedback"
+        app:title="Enable vibration feedback" />
+</PreferenceScreen>

@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">ThirdEye</string>
+    <string name="actSettings_title">ThirdEye Settings</string>
+    <string name="serverWebClientID">515054620954-rh3um2snsedpe8t25juj77k2u8efs4jc.apps.googleusercontent.com</string>
+    <string name="tag">515054620954-rh3um2snsedpe8t25juj77k2u8efs4jc.apps.googleusercontent.com</string>
+
+    <!--MainActivity-->
+    <string name="btnAnalyze">Scan</string>
+    <string name="txtOutInstructions">
+        Simply point your camera to any direction and touch scan button.
+        Once the objects are identified, they will be read aloud.
+        Sign in with an account to leverage cloud processing to improve detection accuracy.
+        Double tap near the middle of the screen to start analysis.
+    </string>
+    <string name="txtOutResult_permission">
+        This app requires camera access to identify surrounding objects. Please click grant permissions button if you\'d like to continue.
+    </string>
+    <string name="mnuSettings">Settings</string>
+    <string name="mnuAbout">About</string>
+
+    <!--SetupActivity-->
+    <string name="txtOutWhy">
+        This app requires camera access to identify surrounding objects. Please click grant permissions button if you\'d like to continue.
+    </string>
+    <string name="btnGrantPermissions">
+        Grant Permissions
+    </string>
+
+    <!--RegistrationActivity-->
+    <string name="btnSignIn">Sign in</string>
+    <string name="btnSignUp">Sign up</string>
+    <string name="txtInPassword_hint">Password</string>
+    <string name="txtInEmail_hint">Email</string>
+
+    <!--SettingsFragment-->
+    <string name="prefSignIn_none">Click to sign up</string>
+    <string name="prefSignIn_signedUp">Click to signed in</string>
+    <string name="prefSignIn_signedIn">Signed in successfully</string>
+    <string name="prefKey_allowOnline">allowOnline</string>
+    <string name="prefKey_allowVoiceFeedback">allowVoiceFeedback</string>
+    <string name="prefKey_allowVibrationFeedback">allowVibrationFeedback</string>
+    <string name="prefKey_email">email</string>
+    <string name="prefKey_password">password</string>
+    <string name="prefKey_signIn">signIn</string>
+</resources>
