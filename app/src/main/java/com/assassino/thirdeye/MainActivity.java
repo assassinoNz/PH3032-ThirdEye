@@ -111,6 +111,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
 
+            case R.id.mnuHelp: {
+                Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+                startActivity(intent);
+                return true;
+            }
+
             default:
                 return super.onOptionsItemSelected(item);
         }
