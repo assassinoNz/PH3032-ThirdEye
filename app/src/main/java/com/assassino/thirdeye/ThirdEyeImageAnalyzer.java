@@ -32,7 +32,7 @@ class ThirdEyeImageAnalyzer implements ImageAnalysis.Analyzer {
     @androidx.camera.core.ExperimentalGetImage
     public void analyze(@NonNull ImageProxy imageProxy) {
         if (this.mainActivity.isOnlineAllowed()) {
-            Toast.makeText(mainActivity, "Using cloud", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mainActivity, R.string.toast_usingCloud, Toast.LENGTH_SHORT).show();
             analyzeOnline(imageProxy);
         } else {
             analyzeOffline(imageProxy);
@@ -63,10 +63,7 @@ class ThirdEyeImageAnalyzer implements ImageAnalysis.Analyzer {
                 for (JsonElement label : result.getAsJsonArray().get(0).getAsJsonObject().get("labelAnnotations").getAsJsonArray()) {
                     JsonObject labelObj = label.getAsJsonObject();
                     sb.append(labelObj.get("description").getAsString())
-                        .append("(")
-                        .append(labelObj.get("score").getAsFloat())
-                        .append(")")
-                        .append(" ");
+                        .append(", ");
                 }
                 this.mainActivity.updateUiWithResult(true, sb.toString());
             })
@@ -90,10 +87,7 @@ class ThirdEyeImageAnalyzer implements ImageAnalysis.Analyzer {
                     StringBuilder sb = new StringBuilder();
                     for (ImageLabel label : labels) {
                         sb.append(label.getText())
-                            .append("(")
-                            .append(label.getConfidence())
-                            .append(")")
-                            .append(" ");
+                            .append(", ");
                     }
                     this.mainActivity.updateUiWithResult(true, sb.toString());
                 })

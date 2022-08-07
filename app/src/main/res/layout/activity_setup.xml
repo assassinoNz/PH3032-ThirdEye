@@ -6,17 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".SetupActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="300dp"
+        android:layout_height="210dp"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="@string/imgPermissionIllustration"
+        android:src="@drawable/ic_baseline_no_photography_24"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
-        android:id="@+id/txtOutWhy"
+        android:id="@+id/txtOutInstructions_setup"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="@string/txtOutWhy"
+        android:text="@string/txtOutInstructions_setup"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/btnGrantPermissions"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <Button
         android:id="@+id/btnGrantPermissions"
@@ -28,25 +38,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="300dp"
-        android:layout_height="210dp"
-        android:contentDescription="@string/imgIllustration"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_baseline_no_photography_24" />
-
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

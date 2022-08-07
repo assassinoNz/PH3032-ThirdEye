@@ -4,27 +4,51 @@
 
     <!--MainActivity-->
     <string name="btnAnalyze">Scan</string>
-    <string name="txtOutInstructions">
-        Simply point your camera to any direction and tap on the scan button.
-        Once the objects are identified, they will be read aloud.
-        Sign in with a Google account in the settings section to leverage cloud processing and improve detection accuracy.
-        Double tap near the middle of the screen to start analysis.
-    </string>
-    <string name="txtOutResult_permission">
-        This app requires camera access to identify surrounding objects. Please click grant permissions button below if you\'d like to continue.
+    <string name="txtOutResult">
+        Results will appear here after a successful scan using the button below
     </string>
     <string name="mnuSettings">Settings</string>
+    <string name="mnuHelp">Help</string>
     <string name="mnuAbout">About</string>
 
     <!--SetupActivity-->
-    <string name="txtOutWhy">
-        This app requires camera access to identify surrounding objects. Please click grant permissions button if you\'d like to continue.
+    <string name="txtOutInstructions_setup">
+        This app requires camera access to identify surrounding objects. Please click grant permissions button below if you\'d like to continue.
     </string>
     <string name="btnGrantPermissions">Grant Permissions</string>
-    <string name="imgIllustration">Camera access not permitted</string>
+    <string name="imgPermissionIllustration">Camera access not permitted icon</string>
+
+    <!--HelpActivity-->
+    <string name="imgHelpIllustration">Help icon</string>
+    <string name="txtOutInstructions_help1">
+        1. To scan your surroundings, simply point your camera to any direction and tap on the scan button near the bottom of the screen.
+    </string>
+    <string name="txtOutInstructions_help2">
+        2. Once the objects are identified, the result will be dropped on screen just above the scan button and additionally read aloud based on your preferences in the settings section.
+    </string>
+    <string name="txtOutInstructions_help3">
+        3. Sign in with a Google account in the settings section to leverage cloud processing and improve detection accuracy.
+    </string>
+    <string name="txtOutInstructions_help4">
+        That\'s all for the tutorial. Please go back and enjoy!
+    </string>
 
     <!--SettingsFragment-->
     <string name="prefKey_allowOnline">keyAllowOnline</string>
     <string name="prefKey_allowVoiceFeedback">keyAllowVoiceFeedback</string>
     <string name="prefKey_allowVibrationFeedback">keyAllowVibrationFeedback</string>
+    <string name="prefKey_keyEnableCameraPreview">keyEnableCameraPreview</string>
+    <string name="prefKey_keySignIn">keySignIn</string>
+
+    <string name="prefKey_keySignIn_summaryTrue">Successfully signed in. Tap here to sign out</string>
+    <string name="prefKey_keySignIn_summaryFalse">Tap here to sign in</string>
+
+    <!--SettingsActivity-->
+    <string name="toast_problemSigningIn_general">There was a problem signing you in</string>
+    <string name="toast_problemSigningIn_network">Couldn\'t sign you in due to a network problem</string>
+    <string name="toast_problemSigningIn_noAccounts">Your device doesn\'t have any Google accounts</string>
+    <string name="toast_successSigningIn">Signed in successfully</string>
+
+    <!--ThirdEyeImageAnalyzer-->
+    <string name="toast_usingCloud">Using cloud</string>
 </resources>
