@@ -2,7 +2,8 @@
     <SwitchPreferenceCompat
         app:defaultValue="true"
         app:key="keyAllowOnline"
-        app:summaryOff="May result in less accurate recognitions"
+        app:summaryOff="Recognitions may be less accurate"
+        app:summaryOn="Make sure to sign in with a Google account below"
         app:title="Allow cloud processing" />
 
     <SwitchPreferenceCompat
@@ -14,4 +15,18 @@
         app:defaultValue="true"
         app:key="keyAllowVibrationFeedback"
         app:title="Enable vibration feedback" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="false"
+        app:key="keyEnableCameraPreview"
+        app:title="Enable camera preview" />
+
+    <PreferenceCategory
+        app:title="Account Management">
+        <Preference
+            app:key="keySignIn"
+            app:title="Sign in"
+            app:summary="@string/prefKey_keySignIn_summaryFalse"/>
+    </PreferenceCategory>
+
 </PreferenceScreen>

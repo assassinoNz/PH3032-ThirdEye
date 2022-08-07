@@ -2,8 +2,8 @@ package com.assassino.thirdeye;
 
 import android.os.Bundle;
 
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SwitchPreferenceCompat;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
     private final SettingsActivity settingsActivity;
@@ -16,14 +16,30 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
-        //Add preference change listener to keyAllowOnline to prompt one-tap UI if not signed in
-        SwitchPreferenceCompat keyAllowOnline = findPreference(getResources().getString(R.string.prefKey_allowOnline));
-        keyAllowOnline.setOnPreferenceChangeListener((preference, newValue) -> {
-            if ((boolean) newValue && !settingsActivity.isSignedIn()) {
+        //Add preference click listener to keySignIn to sign out if signed in or prompt one-tap UI if not signed in
+        Preference keySignIn = findPreference(getResources().getString(R.string.prefKey_keySignIn));
+        keySignIn.setOnPreferenceClickListener(preference -> {
+            if (settingsActivity.isSignedIn()) {
+                settingsActivity.signOut();
+            } else {
                 settingsActivity.startOneTapProcess();
             }
+
+            //Update UI to reflect the signed in status
+            updateUI();
             return true;
         });
 
+        //Update UI to reflect the signed in status
+        updateUI();
+    }
+
+    private void updateUI() {
+        Preference keySignIn = findPreference(getResources().getString(R.string.prefKey_keySignIn));
+        if (settingsActivity.isSignedIn()) {
+            keySignIn.setSummary(R.string.prefKey_keySignIn_summaryTrue);
+        } else {
+            keySignIn.setSummary(R.string.prefKey_keySignIn_summaryFalse);
+        }
     }
 }

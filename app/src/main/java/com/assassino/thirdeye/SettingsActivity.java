@@ -24,7 +24,6 @@ public class SettingsActivity extends AppCompatActivity {
     private BeginSignInRequest signInRequest;
 
     private static final int REQ_ONE_TAP = 2; // Can be any integer unique to the Activity.
-    private boolean showOneTapUI = true;
 
     private FirebaseAuth mAuth;
 
@@ -59,17 +58,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        //Check if user is signed in and show one tap UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null && showOneTapUI) {
-            //CASE: One-tap UI must be shown
-            startOneTapProcess();
-        }
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -81,21 +69,19 @@ public class SettingsActivity extends AppCompatActivity {
                     //CASE: Got an ID token from Google. Use it to authenticate
                     AuthCredential firebaseCredential = GoogleAuthProvider.getCredential(idToken, null);
                     mAuth.signInWithCredential(firebaseCredential)
-                        .addOnSuccessListener(result -> Toast.makeText(this, "Signed in successfully", Toast.LENGTH_SHORT).show())
+                        .addOnSuccessListener(result -> Toast.makeText(this, R.string.toast_successSigningIn, Toast.LENGTH_SHORT).show())
                         .addOnFailureListener(e -> Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show());
                 }
             } catch (ApiException e) {
                 switch (e.getStatusCode()) {
                     case CommonStatusCodes.CANCELED:
                         //CASE: User cancelled one-tap UI
-                        //Don't re-prompt the user.
-                        showOneTapUI = false;
                         break;
                     case CommonStatusCodes.NETWORK_ERROR:
-                        Toast.makeText(SettingsActivity.this, "There was a network problem when signing you in", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingsActivity.this, R.string.toast_problemSigningIn_network, Toast.LENGTH_SHORT).show();
                         break;
                     default:
-                        Toast.makeText(SettingsActivity.this, "There was a problem signing you in", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingsActivity.this, R.string.toast_problemSigningIn_general, Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -109,13 +95,19 @@ public class SettingsActivity extends AppCompatActivity {
                     startIntentSenderForResult(result.getPendingIntent().getIntentSender(), REQ_ONE_TAP,
                             null, 0, 0, 0);
                 } catch (IntentSender.SendIntentException e) {
-                    Toast.makeText(SettingsActivity.this, "There was a problem signing you in", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, R.string.toast_problemSigningIn_general, Toast.LENGTH_SHORT).show();
                 }
             })
             .addOnFailureListener(this, e -> {
                 //CASE: No Google Accounts found. Just continue presenting the signed-out UI.
-                Toast.makeText(SettingsActivity.this, "Your device doesn't have any Google accounts", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingsActivity.this, R.string.toast_problemSigningIn_noAccounts, Toast.LENGTH_SHORT).show();
             });
+    }
+
+    public void signOut() {
+        if (isSignedIn()) {
+            this.mAuth.signOut();
+        }
     }
 
     public boolean isSignedIn() {
