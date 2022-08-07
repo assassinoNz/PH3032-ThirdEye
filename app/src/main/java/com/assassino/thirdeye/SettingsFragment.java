@@ -17,7 +17,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
         //Add preference click listener to keySignIn to sign out if signed in or prompt one-tap UI if not signed in
-        Preference keySignIn = findPreference(getResources().getString(R.string.prefKey_keySignIn));
+        Preference keySignIn = findPreference(getResources().getString(R.string.prefKey_signIn));
         keySignIn.setOnPreferenceClickListener(preference -> {
             if (settingsActivity.isSignedIn()) {
                 settingsActivity.signOut();
@@ -35,7 +35,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void updateUI() {
-        Preference keySignIn = findPreference(getResources().getString(R.string.prefKey_keySignIn));
+        Preference keySignIn = findPreference(getResources().getString(R.string.prefKey_signIn));
         if (settingsActivity.isSignedIn()) {
             keySignIn.setSummary(R.string.prefKey_keySignIn_summaryTrue);
         } else {

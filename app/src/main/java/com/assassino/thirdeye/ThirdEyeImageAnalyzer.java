@@ -57,7 +57,7 @@ class ThirdEyeImageAnalyzer implements ImageAnalysis.Analyzer {
         functions.getHttpsCallable("annotateImage")
             .call(request.toString())
             .continueWith(task -> JsonParser.parseString(new Gson().toJson(task.getResult().getData())))
-            .addOnFailureListener(e -> this.mainActivity.updateUiWithResult(false, e.getMessage()))
+            .addOnFailureListener(e -> this.mainActivity.updateUIWithResult(false, e.getMessage()))
             .addOnSuccessListener(result -> {
                 StringBuilder sb = new StringBuilder();
                 for (JsonElement label : result.getAsJsonArray().get(0).getAsJsonObject().get("labelAnnotations").getAsJsonArray()) {
@@ -65,7 +65,7 @@ class ThirdEyeImageAnalyzer implements ImageAnalysis.Analyzer {
                     sb.append(labelObj.get("description").getAsString())
                         .append(", ");
                 }
-                this.mainActivity.updateUiWithResult(true, sb.toString());
+                this.mainActivity.updateUIWithResult(true, sb.toString());
             })
             .addOnCompleteListener(task -> {
                 imageProxy.close();
@@ -82,14 +82,14 @@ class ThirdEyeImageAnalyzer implements ImageAnalysis.Analyzer {
 
             ImageLabeler labeler = ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS);
             labeler.process(image)
-                .addOnFailureListener(e -> this.mainActivity.updateUiWithResult(false, e.getMessage()))
+                .addOnFailureListener(e -> this.mainActivity.updateUIWithResult(false, e.getMessage()))
                 .addOnSuccessListener(labels -> {
                     StringBuilder sb = new StringBuilder();
                     for (ImageLabel label : labels) {
                         sb.append(label.getText())
                             .append(", ");
                     }
-                    this.mainActivity.updateUiWithResult(true, sb.toString());
+                    this.mainActivity.updateUIWithResult(true, sb.toString());
                 })
                 .addOnCompleteListener(task -> {
                     imageProxy.close();

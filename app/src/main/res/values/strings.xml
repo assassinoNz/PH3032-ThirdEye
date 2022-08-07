@@ -37,8 +37,8 @@
     <string name="prefKey_allowOnline">keyAllowOnline</string>
     <string name="prefKey_allowVoiceFeedback">keyAllowVoiceFeedback</string>
     <string name="prefKey_allowVibrationFeedback">keyAllowVibrationFeedback</string>
-    <string name="prefKey_keyEnableCameraPreview">keyEnableCameraPreview</string>
-    <string name="prefKey_keySignIn">keySignIn</string>
+    <string name="prefKey_enableCameraPreview">keyEnableCameraPreview</string>
+    <string name="prefKey_signIn">keySignIn</string>
 
     <string name="prefKey_keySignIn_summaryTrue">Successfully signed in. Tap here to sign out</string>
     <string name="prefKey_keySignIn_summaryFalse">Tap here to sign in</string>

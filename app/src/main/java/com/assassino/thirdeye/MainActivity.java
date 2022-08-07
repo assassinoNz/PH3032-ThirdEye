@@ -36,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageAnalysis imageAnalysis;
     private ThirdEyeImageAnalyzer thirdEyeImageAnalyzer;
     private Preview preview;
+    private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
+    private CameraSelector cameraSelector;
+
     private FirebaseAuth mAuth;
 
     private TextView txtOutResult;
@@ -65,27 +68,46 @@ public class MainActivity extends AppCompatActivity {
             PreviewView previewView = findViewById(R.id.viewFinder);
             preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
-            //Bind use cases
-            ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(this);
-            cameraProviderFuture.addListener(() -> {
-                try {
-                    CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
-                    Camera camera = cameraProviderFuture.get().bindToLifecycle(this, cameraSelector, preview, imageAnalysis);
-                } catch (ExecutionException | InterruptedException e) {
-                    Log.e(getResources().getString(R.string.tag), e.getMessage());
-                }
-            }, ContextCompat.getMainExecutor(this));
+            //Setup camera options
+            cameraProviderFuture = ProcessCameraProvider.getInstance(MainActivity.this);
+            cameraSelector = new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
+
+            //Bind imageAnalysis use case
+            try {
+                Camera camera = cameraProviderFuture.get().bindToLifecycle(MainActivity.this, cameraSelector, imageAnalysis);
+            } catch (ExecutionException | InterruptedException e) {
+                Log.e(getResources().getString(R.string.tag), e.getMessage());
+            }
 
             //Setup image analyzer
-            thirdEyeImageAnalyzer = new ThirdEyeImageAnalyzer(this);
+            thirdEyeImageAnalyzer = new ThirdEyeImageAnalyzer(MainActivity.this);
 
             //Setup buttons
             Button btnAnalyze = findViewById(R.id.btnAnalyze);
-            btnAnalyze.setOnClickListener(view -> imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(this), thirdEyeImageAnalyzer));
+            btnAnalyze.setOnClickListener(view -> imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(MainActivity.this), thirdEyeImageAnalyzer));
         } else {
             //CASE: App doesn't have all required permissions
             Intent intent = new Intent(MainActivity.this, SetupActivity.class);
             startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //Check if camera preview is needed and bind/unbind that use case accordingly
+        boolean allowedCameraPreview = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getResources().getString(R.string.prefKey_enableCameraPreview), false);
+        try {
+            if (allowedCameraPreview) {
+                //CASE: Camera preview is enabled
+                cameraProviderFuture.get().bindToLifecycle(MainActivity.this, cameraSelector, preview);
+            } else {
+                //CASE: Camera preview is disabled
+                cameraProviderFuture.get().unbind(preview);
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e(getResources().getString(R.string.tag), e.getMessage());
         }
     }
 
@@ -146,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         this.imageAnalysis.clearAnalyzer();
     }
 
-    void updateUiWithResult(boolean isSuccess, String result) {
+    void updateUIWithResult(boolean isSuccess, String result) {
         this.txtOutResult.setText(result);
 
         boolean allowedVibration = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getResources().getString(R.string.prefKey_allowVibrationFeedback), true);
