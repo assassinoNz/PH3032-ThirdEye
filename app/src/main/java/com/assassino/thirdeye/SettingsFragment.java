@@ -19,7 +19,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         //Add preference change listener to keyAllowOnline to prompt one-tap UI if not signed in
         SwitchPreferenceCompat keyAllowOnline = findPreference(getResources().getString(R.string.prefKey_allowOnline));
         keyAllowOnline.setOnPreferenceChangeListener((preference, newValue) -> {
-            if (!settingsActivity.isSignedIn()) {
+            if ((boolean) newValue && !settingsActivity.isSignedIn()) {
                 settingsActivity.startOneTapProcess();
             }
             return true;

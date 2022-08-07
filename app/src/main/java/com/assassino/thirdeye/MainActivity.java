@@ -111,12 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
 
-            case R.id.mnuRegister: {
-                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
-                startActivity(intent);
-                return true;
-            }
-
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -23,7 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
     private SignInClient oneTapClient;
     private BeginSignInRequest signInRequest;
 
-    private static final int REQ_ONE_TAP = 2;  // Can be any integer unique to the Activity.
+    private static final int REQ_ONE_TAP = 2; // Can be any integer unique to the Activity.
     private boolean showOneTapUI = true;
 
     private FirebaseAuth mAuth;
@@ -61,7 +61,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
         //Check if user is signed in and show one tap UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null && showOneTapUI) {
