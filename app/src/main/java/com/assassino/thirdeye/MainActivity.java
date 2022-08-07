@@ -20,6 +20,7 @@ import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,14 +31,16 @@ import android.widget.TextView;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageAnalysis imageAnalysis;
+    private ImageAnalysis imageAnalysisUseCase;
+    private Preview previewUseCase;
     private ThirdEyeImageAnalyzer thirdEyeImageAnalyzer;
-    private Preview preview;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private CameraSelector cameraSelector;
+    private TextToSpeech textToSpeech;
 
     private FirebaseAuth mAuth;
 
@@ -59,14 +62,9 @@ public class MainActivity extends AppCompatActivity {
             //CASE: App has all required permissions
 
             //Build analyze use case
-            imageAnalysis = new ImageAnalysis.Builder()
+            imageAnalysisUseCase = new ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
-
-            //Build preview use case
-            preview = new Preview.Builder().build();
-            PreviewView previewView = findViewById(R.id.viewFinder);
-            preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
             //Setup camera options
             cameraProviderFuture = ProcessCameraProvider.getInstance(MainActivity.this);
@@ -74,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
             //Bind imageAnalysis use case
             try {
-                Camera camera = cameraProviderFuture.get().bindToLifecycle(MainActivity.this, cameraSelector, imageAnalysis);
+                Camera camera = cameraProviderFuture.get().bindToLifecycle(MainActivity.this, cameraSelector, imageAnalysisUseCase);
             } catch (ExecutionException | InterruptedException e) {
                 Log.e(getResources().getString(R.string.tag), e.getMessage());
             }
@@ -84,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
             //Setup buttons
             Button btnAnalyze = findViewById(R.id.btnAnalyze);
-            btnAnalyze.setOnClickListener(view -> imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(MainActivity.this), thirdEyeImageAnalyzer));
+            btnAnalyze.setOnClickListener(view -> imageAnalysisUseCase.setAnalyzer(ContextCompat.getMainExecutor(MainActivity.this), thirdEyeImageAnalyzer));
         } else {
             //CASE: App doesn't have all required permissions
             Intent intent = new Intent(MainActivity.this, SetupActivity.class);
@@ -97,17 +95,54 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         //Check if camera preview is needed and bind/unbind that use case accordingly
-        boolean allowedCameraPreview = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getResources().getString(R.string.prefKey_enableCameraPreview), false);
-        try {
-            if (allowedCameraPreview) {
-                //CASE: Camera preview is enabled
-                cameraProviderFuture.get().bindToLifecycle(MainActivity.this, cameraSelector, preview);
+        boolean needsPreview = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getResources().getString(R.string.prefKey_enableCameraPreview), false);
+        if (needsPreview) {
+            //CASE: Preview use case is needed
+            if (previewUseCase == null) {
+                //CASE: Preview use case is not yet created
+
+                //Build preview use case
+                previewUseCase = new Preview.Builder().build();
+                PreviewView previewView = findViewById(R.id.viewFinder);
+                previewUseCase.setSurfaceProvider(previewView.getSurfaceProvider());
+
+                //Bind preview use case
+                try {
+                    cameraProviderFuture.get().bindToLifecycle(MainActivity.this, cameraSelector, previewUseCase);
+                } catch (ExecutionException | InterruptedException e) {
+                    Log.e(getResources().getString(R.string.tag), e.getMessage());
+                }
             } else {
-                //CASE: Camera preview is disabled
-                cameraProviderFuture.get().unbind(preview);
+                //CASE: Preview use case is already created
+                //Bind preview use case
+                try {
+                    cameraProviderFuture.get().bindToLifecycle(MainActivity.this, cameraSelector, previewUseCase);
+                } catch (ExecutionException | InterruptedException e) {
+                    Log.e(getResources().getString(R.string.tag), e.getMessage());
+                }
             }
-        } catch (ExecutionException | InterruptedException e) {
-            Log.e(getResources().getString(R.string.tag), e.getMessage());
+        } else {
+            //CASE: Preview use case is not needed
+            if (previewUseCase != null) {
+                //CASE: Preview use case is already created
+                //Unbind preview use case
+                try {
+                    cameraProviderFuture.get().unbind(previewUseCase);
+                } catch (ExecutionException | InterruptedException e) {
+                    Log.e(getResources().getString(R.string.tag), e.getMessage());
+                }
+            }
+        }
+
+        //Check if voice feedback is needed and bind/unbind that use case accordingly
+        boolean needsVoice = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getResources().getString(R.string.prefKey_allowVoiceFeedback), true);
+        if (needsVoice) {
+            //CASE: Voice feedback is needed
+            if (textToSpeech == null) {
+                //CASE: Voice feedback engine is not yet created
+                //Build voice feedback engine
+                textToSpeech = new TextToSpeech(MainActivity.this, status -> textToSpeech.setLanguage(Locale.US));
+            }
         }
     }
 
@@ -144,6 +179,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //Shutdown voice feedback engine
+        textToSpeech.shutdown();
+    }
+
     private boolean hasBasicPermissions() {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
@@ -165,21 +208,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void resetAnalyzer() {
-        this.imageAnalysis.clearAnalyzer();
+        this.imageAnalysisUseCase.clearAnalyzer();
     }
 
     void updateUIWithResult(boolean isSuccess, String result) {
         this.txtOutResult.setText(result);
 
-        boolean allowedVibration = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getResources().getString(R.string.prefKey_allowVibrationFeedback), true);
-        boolean allowedVoice;
+        boolean needsVibration = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getResources().getString(R.string.prefKey_allowVibrationFeedback), true);
+        boolean needsVoice = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getResources().getString(R.string.prefKey_allowVoiceFeedback), true);
         if (isSuccess) {
-            if (allowedVibration) {
+            if (needsVibration) {
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
             }
+
+            if (needsVoice) {
+                textToSpeech.speak(result, TextToSpeech.QUEUE_FLUSH, null);
+            }
         } else {
-            if (allowedVibration) {
+            if (needsVibration) {
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
             }
