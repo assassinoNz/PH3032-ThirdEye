@@ -1,6 +1,10 @@
 package com.assassino.thirdeye;
 
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.media.Image;
+import android.util.Log;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +23,10 @@ import com.google.mlkit.vision.label.ImageLabel;
 import com.google.mlkit.vision.label.ImageLabeler;
 import com.google.mlkit.vision.label.ImageLabeling;
 import com.google.mlkit.vision.label.defaults.ImageLabelerOptions;
+import com.google.mlkit.vision.text.Text;
+import com.google.mlkit.vision.text.TextRecognition;
+import com.google.mlkit.vision.text.TextRecognizer;
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 
 class ThirdEyeImageAnalyzer implements ImageAnalysis.Analyzer {
     private final FirebaseFunctions functions = FirebaseFunctions.getInstance();
@@ -31,16 +39,23 @@ class ThirdEyeImageAnalyzer implements ImageAnalysis.Analyzer {
     @Override
     @androidx.camera.core.ExperimentalGetImage
     public void analyze(@NonNull ImageProxy imageProxy) {
-        if (this.mainActivity.isOnlineAllowed()) {
-            Toast.makeText(mainActivity, R.string.toast_usingCloud, Toast.LENGTH_SHORT).show();
-            analyzeOnline(imageProxy);
-        } else {
-            analyzeOffline(imageProxy);
+        RadioGroup radioGrpAnalysisMode = mainActivity.findViewById(R.id.radioGrpAnalysisMode);
+
+        if (radioGrpAnalysisMode.getCheckedRadioButtonId() == R.id.radioLabelScene) {
+            if (this.mainActivity.isOnlineAllowed()) {
+                Toast.makeText(mainActivity, R.string.toast_usingCloud, Toast.LENGTH_SHORT).show();
+                labelSceneOnline(imageProxy);
+            } else {
+                labelSceneOffline(imageProxy);
+            }
+        } else if (radioGrpAnalysisMode.getCheckedRadioButtonId() == R.id.radioReadText) {
+            recognizeTextOffline(imageProxy);
         }
+
     }
 
     @androidx.camera.core.ExperimentalGetImage
-    private void analyzeOnline(ImageProxy imageProxy) {
+    private void labelSceneOnline(@NonNull ImageProxy imageProxy) {
         //Create json request to cloud vision
         JsonObject request = new JsonObject();
         JsonObject image = new JsonObject();
@@ -74,21 +89,53 @@ class ThirdEyeImageAnalyzer implements ImageAnalysis.Analyzer {
     }
 
     @androidx.camera.core.ExperimentalGetImage
-    private void analyzeOffline(ImageProxy imageProxy) {
+    private void labelSceneOffline(ImageProxy imageProxy) {
         Image mediaImage = imageProxy.getImage();
 
         if (mediaImage != null) {
             InputImage image = InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
+
+            Log.d("THIRD_EYE", String.valueOf(imageProxy.getImageInfo().getRotationDegrees()));
 
             ImageLabeler labeler = ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS);
             labeler.process(image)
                 .addOnFailureListener(e -> this.mainActivity.updateUIWithResult(false, e.getMessage()))
                 .addOnSuccessListener(labels -> {
                     StringBuilder sb = new StringBuilder();
+
                     for (ImageLabel label : labels) {
                         sb.append(label.getText())
                             .append(", ");
                     }
+
+                    this.mainActivity.updateUIWithResult(true, sb.toString());
+                })
+                .addOnCompleteListener(task -> {
+                    imageProxy.close();
+                    this.mainActivity.resetAnalyzer();
+                });
+        }
+    }
+
+    @androidx.camera.core.ExperimentalGetImage
+    private void recognizeTextOffline(ImageProxy imageProxy) {
+        Image mediaImage = imageProxy.getImage();
+
+        if (mediaImage != null) {
+            InputImage image = InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
+
+            Log.d("THIRD_EYE", String.valueOf(imageProxy.getImageInfo().getRotationDegrees()));
+
+            TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
+            recognizer.process(image)
+                .addOnFailureListener(e -> this.mainActivity.updateUIWithResult(false, e.getMessage()))
+                .addOnSuccessListener(result -> {
+                    StringBuilder sb = new StringBuilder();
+
+                    for (Text.TextBlock block : result.getTextBlocks()) {
+                        sb.append(block.getText()).append("\n\n");
+                    }
+
                     this.mainActivity.updateUIWithResult(true, sb.toString());
                 })
                 .addOnCompleteListener(task -> {

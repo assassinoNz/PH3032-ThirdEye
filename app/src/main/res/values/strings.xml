@@ -4,6 +4,8 @@
 
     <!--MainActivity-->
     <string name="btnAnalyze">Scan</string>
+    <string name="radioLabelScene">Label Scene</string>
+    <string name="radioReadText">Read Text</string>
     <string name="txtOutResult">
         Results will appear here after a successful scan using the button below
     </string>

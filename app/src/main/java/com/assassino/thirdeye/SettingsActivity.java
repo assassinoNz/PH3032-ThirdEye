@@ -44,7 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         //Setup one-tap UI
-        oneTapClient = Identity.getSignInClient(this);
+        oneTapClient = Identity.getSignInClient(SettingsActivity.this);
         signInRequest = BeginSignInRequest.builder()
             .setGoogleIdTokenRequestOptions(
                 BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
