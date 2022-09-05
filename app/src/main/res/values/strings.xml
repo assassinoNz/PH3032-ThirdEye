@@ -23,15 +23,15 @@
     <!--HelpActivity-->
     <string name="imgHelpIllustration">Help icon</string>
     <string name="txtOutInstructions_help1">
-        1. To scan your surroundings, simply point your camera to any direction and tap on the scan button near the bottom of the screen.
+        1. First tap the appropriate radio button to select between scene labeling and text recognition.
     </string>
     <string name="txtOutInstructions_help2">
-        2. Once the objects are identified, the result will be dropped on screen just above the scan button and additionally read aloud based on your preferences in the settings section.
+        2. To begin scanning, simply point your camera towards a scene of piece of text and tap on the scan button near the bottom of the screen.
     </string>
     <string name="txtOutInstructions_help3">
-        3. Sign in with a Google account in the settings section to leverage cloud processing and improve detection accuracy.
+        3. Once the objects or text are identified, the result will be dropped on screen just above the scan button and additionally read aloud based on your preferences in the settings section.
     </string>
-    <string name="txtOutInstructions_help4">
+    <string name="txtOutInstructions_help5">
         That\'s all for the tutorial. Please go back and enjoy!
     </string>
 
@@ -40,16 +40,6 @@
     <string name="prefKey_allowVoiceFeedback">keyAllowVoiceFeedback</string>
     <string name="prefKey_allowVibrationFeedback">keyAllowVibrationFeedback</string>
     <string name="prefKey_enableCameraPreview">keyEnableCameraPreview</string>
-    <string name="prefKey_signIn">keySignIn</string>
-
-    <string name="prefKey_keySignIn_summaryTrue">Successfully signed in. Tap here to sign out</string>
-    <string name="prefKey_keySignIn_summaryFalse">Tap here to sign in</string>
-
-    <!--SettingsActivity-->
-    <string name="toast_problemSigningIn_general">There was a problem signing you in</string>
-    <string name="toast_problemSigningIn_network">Couldn\'t sign you in due to a network problem</string>
-    <string name="toast_problemSigningIn_noAccounts">Your device doesn\'t have any Google accounts</string>
-    <string name="toast_successSigningIn">Signed in successfully</string>
 
     <!--ThirdEyeImageAnalyzer-->
     <string name="toast_usingCloud">Using cloud</string>

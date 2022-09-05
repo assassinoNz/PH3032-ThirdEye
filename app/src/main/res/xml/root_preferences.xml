@@ -21,12 +21,4 @@
         app:key="keyEnableCameraPreview"
         app:title="Enable camera preview" />
 
-    <PreferenceCategory
-        app:title="Account Management">
-        <Preference
-            app:key="keySignIn"
-            app:title="Sign in"
-            app:summary="@string/prefKey_keySignIn_summaryFalse"/>
-    </PreferenceCategory>
-
 </PreferenceScreen>

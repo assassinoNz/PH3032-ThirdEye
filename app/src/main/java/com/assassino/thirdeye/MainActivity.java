@@ -91,6 +91,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(mAuth.getCurrentUser() == null){
+            mAuth.signInWithEmailAndPassword("default.user@thirdeye.com", "9A8B7C6D5E4F3G2H1")
+                .addOnSuccessListener(result -> Log.d(getString(R.string.tag), "Signed in with default user account"))
+                .addOnFailureListener(e -> Log.d(getString(R.string.tag), "Couldn't sign in with the default user account"));
+        }
+
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
