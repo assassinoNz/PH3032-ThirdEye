@@ -1,9 +1,6 @@
 package com.assassino.thirdeye;
 
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.media.Image;
-import android.util.Log;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -95,8 +92,6 @@ class ThirdEyeImageAnalyzer implements ImageAnalysis.Analyzer {
         if (mediaImage != null) {
             InputImage image = InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
 
-            Log.d("THIRD_EYE", String.valueOf(imageProxy.getImageInfo().getRotationDegrees()));
-
             ImageLabeler labeler = ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS);
             labeler.process(image)
                 .addOnFailureListener(e -> this.mainActivity.updateUIWithResult(false, e.getMessage()))
@@ -123,8 +118,6 @@ class ThirdEyeImageAnalyzer implements ImageAnalysis.Analyzer {
 
         if (mediaImage != null) {
             InputImage image = InputImage.fromMediaImage(mediaImage, imageProxy.getImageInfo().getRotationDegrees());
-
-            Log.d("THIRD_EYE", String.valueOf(imageProxy.getImageInfo().getRotationDegrees()));
 
             TextRecognizer recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
             recognizer.process(image)
