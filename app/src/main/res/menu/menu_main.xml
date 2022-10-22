@@ -5,6 +5,4 @@
         android:title="@string/mnuSettings" />
     <item android:title="@string/mnuHelp"
         android:id="@+id/mnuHelp"/>
-    <item android:title="@string/mnuAbout"
-        android:id="@+id/mnuAbout"/>
 </menu>

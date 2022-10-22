@@ -33,10 +33,6 @@
             android:exported="false"
             android:label="Help"/>
         <activity
-            android:name=".AboutActivity"
-            android:exported="false"
-            android:label="About" />
-        <activity
             android:name=".SetupActivity"
             android:exported="false"
             android:label="Permissions" />

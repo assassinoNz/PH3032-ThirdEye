@@ -192,12 +192,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
 
-            case R.id.mnuAbout: {
-                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-                startActivity(intent);
-                return true;
-            }
-
             case R.id.mnuHelp: {
                 Intent intent = new Intent(MainActivity.this, HelpActivity.class);
                 startActivity(intent);
