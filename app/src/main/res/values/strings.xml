@@ -23,13 +23,13 @@
     <!--HelpActivity-->
     <string name="imgHelpIllustration">Help icon</string>
     <string name="txtOutInstructions_help1">
-        1. First tap the appropriate radio button to select between scene labeling and text recognition.
+        1. First tap on the appropriate radio button to switch between the scene labeling and text reading modes. As a convenience feature, touch holding the scan button will toggle between those modes.
     </string>
     <string name="txtOutInstructions_help2">
-        2. To begin scanning, simply point your camera towards a scene of piece of text and tap on the scan button near the bottom of the screen.
+        2. To begin scanning, simply point your camera towards a scene or a piece of text and tap on the scan button near the bottom of the screen.
     </string>
     <string name="txtOutInstructions_help3">
-        3. Once the objects or text are identified, the result will be dropped on screen just above the scan button and additionally read aloud based on your preferences in the settings section.
+        3. Once the objects or text are identified, the result will be dropped on screen just above the scan button and additionally will be read aloud based on your preferences in the settings section.
     </string>
     <string name="txtOutInstructions_help5">
         That\'s all for the tutorial. Please go back and enjoy!

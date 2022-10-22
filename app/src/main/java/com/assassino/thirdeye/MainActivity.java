@@ -26,7 +26,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.auth.FirebaseAuth;
@@ -83,6 +86,21 @@ public class MainActivity extends AppCompatActivity {
             //Setup buttons
             Button btnAnalyze = findViewById(R.id.btnAnalyze);
             btnAnalyze.setOnClickListener(view -> imageAnalysisUseCase.setAnalyzer(ContextCompat.getMainExecutor(MainActivity.this), thirdEyeImageAnalyzer));
+
+            RadioGroup radioGrpAnalysisMode = findViewById(R.id.radioGrpAnalysisMode);
+            RadioButton radioLabelScene = findViewById(R.id.radioLabelScene);
+            RadioButton radioReadText = findViewById(R.id.radioReadText);
+            btnAnalyze.setOnLongClickListener(view -> {
+                if (radioGrpAnalysisMode.getCheckedRadioButtonId() == R.id.radioReadText) {
+                    radioLabelScene.toggle();
+                    Toast.makeText(this, "Switched to scene labeling mode", Toast.LENGTH_SHORT).show();
+                } else {
+                    radioReadText.toggle();
+                    Toast.makeText(this, "Switched to text reading mode", Toast.LENGTH_SHORT).show();
+                }
+
+                return true;
+            });
         } else {
             //CASE: App doesn't have all required permissions
             Intent intent = new Intent(MainActivity.this, SetupActivity.class);
