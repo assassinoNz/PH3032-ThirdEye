@@ -3,7 +3,6 @@
         app:defaultValue="true"
         app:key="keyAllowOnline"
         app:summaryOff="Recognitions may be less accurate"
-        app:summaryOn="Make sure to sign in with a Google account below"
         app:title="Allow cloud processing" />
 
     <SwitchPreferenceCompat
