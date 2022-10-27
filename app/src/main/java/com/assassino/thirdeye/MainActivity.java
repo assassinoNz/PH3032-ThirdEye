@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Setup text views
         txtOutResult = findViewById(R.id.txtOutResult);
+        txtOutResult.setMovementMethod(new ScrollingMovementMethod());
 
         //Continue onCreate based on permissions
         if (hasBasicPermissions()) {

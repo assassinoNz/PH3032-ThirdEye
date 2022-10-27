@@ -8,26 +8,36 @@
 
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="107dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/radioGrpAnalysisMode"
+        app:layout_constraintVertical_bias="1.0">
+
+    </androidx.camera.view.PreviewView>
 
     <RadioGroup
         android:id="@+id/radioGrpAnalysisMode"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/viewFinder"
+        app:layout_constraintStart_toStartOf="@+id/viewFinder"
         app:layout_constraintTop_toTopOf="parent">
 
         <RadioButton
             android:id="@+id/radioLabelScene"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:button="@null"
             android:checked="true"
+            android:drawableEnd="@android:drawable/btn_radio"
             android:text="@string/radioLabelScene"
             android:textAlignment="center" />
 
@@ -35,36 +45,44 @@
             android:id="@+id/radioReadText"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableStart="@android:drawable/btn_radio"
             android:text="@string/radioReadText"
             android:textAlignment="center" />
     </RadioGroup>
-
-    <TextView
-        android:id="@+id/txtOutResult"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:text="@string/txtOutResult"
-        android:textAlignment="center"
-        android:singleLine="false"
-        android:maxLines="5"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/btnAnalyze"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnAnalyze"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/btn_analyze"
         android:elevation="2dp"
         android:text="@string/btnAnalyze"
-        app:layout_constraintBottom_toBottomOf="@+id/viewFinder"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="@color/white"
+        app:strokeWidth="5dp" />
 
+    <TextView
+        android:id="@+id/txtOutResult"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:background="@android:drawable/editbox_background"
+        android:padding="20dp"
+        android:scrollbars="vertical"
+        android:maxLines="10"
+        android:singleLine="false"
+        android:text="@string/txtOutResult"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAnalyze"
+        app:layout_constraintEnd_toEndOf="@+id/radioGrpAnalysisMode"
+        app:layout_constraintStart_toStartOf="@+id/radioGrpAnalysisMode" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
